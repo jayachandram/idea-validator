@@ -34,37 +34,49 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
+
         defaultSrc: ["'self'"],
 
         scriptSrc: [
           "'self'",
+          "'unsafe-eval'",
           "https://apis.google.com",
           "https://www.gstatic.com",
           "https://www.googleapis.com"
+        ],
+
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com"
+        ],
+
+        fontSrc: [
+          "'self'",
+          "https://fonts.gstatic.com"
+        ],
+
+        imgSrc: [
+          "'self'",
+          "data:",
+          "https://lh3.googleusercontent.com",
+          "https://*.googleusercontent.com"
+        ],
+
+        frameSrc: [
+          "'self'",
+          "https://accounts.google.com",
+          "https://*.firebaseapp.com"
         ],
 
         connectSrc: [
           "'self'",
           "https://identitytoolkit.googleapis.com",
           "https://securetoken.googleapis.com",
-          "https://firestore.googleapis.com"
-        ],
-
-        frameSrc: [
-          "'self'",
-          "https://accounts.google.com"
-        ],
-
-        imgSrc: [
-          "'self'",
-          "data:",
-          "https://lh3.googleusercontent.com"
-        ],
-
-        styleSrc: [
-          "'self'",
-          "'unsafe-inline'"
+          "https://firestore.googleapis.com",
+          "https://apis.google.com"
         ]
+
       }
     }
   })
