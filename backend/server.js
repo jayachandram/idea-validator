@@ -30,7 +30,45 @@ initializeFirebase();
 // ─── SECURITY MIDDLEWARE ────────────────────────────────────
 //
 
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+
+        scriptSrc: [
+          "'self'",
+          "https://apis.google.com",
+          "https://www.gstatic.com",
+          "https://www.googleapis.com"
+        ],
+
+        connectSrc: [
+          "'self'",
+          "https://identitytoolkit.googleapis.com",
+          "https://securetoken.googleapis.com",
+          "https://firestore.googleapis.com"
+        ],
+
+        frameSrc: [
+          "'self'",
+          "https://accounts.google.com"
+        ],
+
+        imgSrc: [
+          "'self'",
+          "data:",
+          "https://lh3.googleusercontent.com"
+        ],
+
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'"
+        ]
+      }
+    }
+  })
+);
 
 app.use(
   cors({
