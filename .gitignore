@@ -1,6 +1,5 @@
 node_modules
 .env
-build
 dist
 .cache
 frontend/node_modules
