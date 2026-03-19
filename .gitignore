@@ -4,3 +4,8 @@ dist
 .cache
 frontend/node_modules
 backend/node_modules
+frontend/.env
+backend/.env
+backend/testEmail.js
+backend/testModels.js
+backend/testKey.js
