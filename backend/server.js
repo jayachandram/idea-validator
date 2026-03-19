@@ -32,6 +32,7 @@ initializeFirebase();
 
 app.use(
   helmet({
+    crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
     contentSecurityPolicy: {
       directives: {
 
@@ -87,7 +88,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       process.env.FRONTEND_URL
-    ],
+    ].filter(Boolean),
     credentials: true
   })
 );
