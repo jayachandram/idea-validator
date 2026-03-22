@@ -1,5 +1,4 @@
-# 💡 Idea Validator Pro — Complete Setup Guide
-
+# 💡 Idea Validator Pro 
 A production-grade AI startup idea validation platform with authentication, chat history, and thinking profile analysis.
 
 ---
@@ -20,7 +19,7 @@ A production-grade AI startup idea validation platform with authentication, chat
 
 ---
 
-## 📋 STEP-BY-STEP SETUP (Do these in order)
+## 📋 STEP-BY-STEP SETU
 
 ---
 
@@ -61,7 +60,7 @@ A production-grade AI startup idea validation platform with authentication, chat
 
 ---
 
-### STEP 3 — Anthropic API Key (AI Validation)
+### STEP 3 — Anthropic API Key (Use Gemini for free)
 
 1. Go to https://console.anthropic.com
 2. Create account → Go to API Keys → Create Key
@@ -79,17 +78,6 @@ A production-grade AI startup idea validation platform with authentication, chat
    - `EMAIL_USER` = your-gmail@gmail.com
    - `EMAIL_PASS` = the 16-char app password
 
----
-
-### STEP 5 — Twilio (SMS OTP)
-
-1. Go to https://console.twilio.com → Create free account
-2. Get a free trial phone number (US number works globally)
-3. Copy into backend `.env`:
-   - `TWILIO_ACCOUNT_SID` = from Dashboard
-   - `TWILIO_AUTH_TOKEN` = from Dashboard
-   - `TWILIO_PHONE_NUMBER` = your Twilio number (e.g. +15551234567)
-4. **Note:** Free trial requires verified numbers. To send to any number, upgrade to paid ($15 minimum).
 
 ---
 
@@ -103,17 +91,6 @@ A production-grade AI startup idea validation platform with authentication, chat
 
 > **Alternative:** Skip Redis for local dev — the code has an in-memory fallback that works fine for development. Just don't use it in production.
 
----
-
-### STEP 7 — JWT Secrets
-
-Generate two random secrets in your terminal:
-```bash
-node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
-```
-Run twice — one for `JWT_SECRET`, one for `JWT_REFRESH_SECRET`.
-
----
 
 ## 🚀 RUNNING THE APP LOCALLY
 
@@ -203,10 +180,6 @@ GOOGLE FLOW:
 Click Google → Firebase popup → get idToken → send to backend
 → verify with Firebase Admin → find/create user → JWT issued
 
-PHONE FLOW:
-Enter phone → backend sends SMS via Twilio → store OTP in Redis (10min TTL)
-→ user enters OTP → verify → find/create user → JWT issued
-
 JWT STRATEGY:
 Access Token:  15 minute expiry (stored in memory + httpOnly cookie)
 Refresh Token: 30 day expiry (httpOnly cookie only)
@@ -223,85 +196,3 @@ Every time a user sends a message:
 3. The AI reads ALL the user's messages across ALL sessions
 4. Returns: dominant style, 6 trait scores, gaps, strengths, suggestions, themes
 5. Stored on the User document and shown on the Dashboard
-
----
-
-## 🌐 DEPLOYING TO PRODUCTION
-
-### Backend → Railway
-```bash
-# Install Railway CLI
-npm install -g @railway/cli
-railway login
-railway init
-railway up
-# Add all .env variables in Railway dashboard
-```
-
-### Frontend → Vercel
-```bash
-npm install -g vercel
-cd frontend
-vercel --prod
-# Add REACT_APP_ env vars in Vercel dashboard
-```
-
-### After deploying:
-1. Update `FRONTEND_URL` in backend `.env` to your Vercel URL
-2. Update `REACT_APP_API_URL` in frontend `.env` to your Railway URL
-3. Add your production domain to Firebase Authorized Domains
-4. Add your production domain to MongoDB Network Access
-
----
-
-## 📦 API REFERENCE
-
-### Auth Endpoints
-| Method | Route | Description |
-|--------|-------|-------------|
-| POST | /api/auth/register | Email registration |
-| GET | /api/auth/verify-email | Email verification |
-| POST | /api/auth/login | Email login |
-| POST | /api/auth/google | Google OAuth |
-| POST | /api/auth/phone/send-otp | Send SMS OTP |
-| POST | /api/auth/phone/verify-otp | Verify OTP + login |
-| POST | /api/auth/refresh | Refresh access token |
-| POST | /api/auth/logout | Clear session |
-| GET | /api/auth/me | Get current user |
-| POST | /api/auth/forgot-password | Send reset email |
-| POST | /api/auth/reset-password | Set new password |
-
-### Chat Endpoints (all protected)
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | /api/chat/sessions | List sessions |
-| POST | /api/chat/sessions | Create session |
-| GET | /api/chat/sessions/:id | Get session + messages |
-| POST | /api/chat/sessions/:id/messages | **Send message → get AI reply** |
-| PATCH | /api/chat/sessions/:id | Update (pin/rename/archive) |
-| DELETE | /api/chat/sessions/:id | Delete session |
-| GET | /api/chat/search?q=xxx | Full-text search |
-
-### User Endpoints (all protected)
-| Method | Route | Description |
-|--------|-------|-------------|
-| GET | /api/user/profile | Full profile + stats |
-| PATCH | /api/user/profile | Update profile |
-| GET | /api/user/thinking-profile | AI thinking analysis |
-| GET | /api/user/dashboard | Dashboard data |
-
----
-
-## ⚡ ESTIMATED MONTHLY COSTS (at small scale)
-
-| Service | Free Tier | Paid |
-|---------|-----------|------|
-| MongoDB Atlas | 512MB — enough for ~50K sessions | $57/mo M2 |
-| Firebase | 50K auth users/month | $0.0055/user after |
-| Anthropic | Pay per use | ~$5-15/mo at low volume |
-| Twilio | $15 trial credit | ~$0.0075/SMS |
-| Redis Cloud | 30MB free | $7/mo for 100MB |
-| Railway | $5/mo hobby | Scales with usage |
-| Vercel | Free for hobby | $20/mo pro |
-
-**Total at low volume: ~$10-20/month**
